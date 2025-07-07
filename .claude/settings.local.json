@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(ls:*)",
+      "Bash(gcc:*)",
+      "Bash(./c_precision_study)",
+      "Bash(./tridiagonal_thomas_study)",
+      "Bash(./thomas_afpm_hybrid)",
+      "Bash(grep:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}
