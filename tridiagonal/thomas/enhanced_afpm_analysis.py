@@ -358,7 +358,7 @@ class EnhancedAFPMAnalysis:
                     min_error = size_data['mean_relative_l2_error'].min()
                     max_error = size_data['mean_relative_l2_error'].max()
                     
-                    print(f"  {size:10d} | {condition_num:12.2e} | {min_error:.2e} - {max_error:.2e}")
+                    print(f"  {size:10d} | {condition_num:12.2e} | {min_error:.10We} - {max_error:.2e}")
 
 def main():
     """Run enhanced analysis"""

@@ -6,7 +6,7 @@ matrix_generation:
   # Matrix size configuration
   size_range:
     min_size: 4              # Minimum matrix size (must be >= 4)
-    max_size: 2048          # Maximum matrix size (2^16)
+    max_size: 65536          # Maximum matrix size (2^16)
     size_progression: "powers_of_2"  # Options: "powers_of_2", "linear", "custom"
     
     # For linear progression (if size_progression: "linear")
@@ -21,7 +21,7 @@ matrix_generation:
     - "fem_poisson"          # FEM Poisson discretization
   
   # Statistical robustness
-  matrices_per_size: 1      # Number of matrices to generate per size
+  matrices_per_size: 100      # Number of matrices to generate per size
   
   # Output directory
   output_dir: "test_matrices"

@@ -351,25 +351,27 @@ class AFPMResultsPlotter:
         
         print(f"Linear plots saved to: {linear_plot_file}")
     
+
     def print_summary_statistics(self, df):
-        """Print summary statistics"""
+        """Print summary statistics for each matrix size, type, and config (separate table for each config)"""
         print("\n=== SUMMARY STATISTICS ===")
-        for matrix_type in ['tridiagonal_toeplitz', 'fem_poisson']:
+        matrix_types = ['tridiagonal_toeplitz', 'fem_poisson']
+        for matrix_type in matrix_types:
             print(f"\n{matrix_type.upper().replace('_', ' ')}:")
             type_data = df[df['matrix_type'] == matrix_type]
-            
-            print("  Size Range | Condition Numbers | Error Range (%)")
-            print("  -----------|-------------------|------------------")
-            
-            for size in sorted(type_data['matrix_size'].unique()):
-                size_data = type_data[type_data['matrix_size'] == size]
-                if not size_data.empty:
-                    condition_num = size_data['mean_condition_number'].iloc[0]
-                    min_error = size_data['mean_relative_l2_error'].min() * 100
-                    max_error = size_data['mean_relative_l2_error'].max() * 100
-                    
-                    print(f"  {size:10d} | {condition_num:12.2e} | {min_error:.3f}% - {max_error:.2f}%")
-    
+            config_names = type_data['config_name'].unique()
+            for config_name in config_names:
+                print(f"\n  CONFIG: {config_name}")
+                print("  Size       | Condition #    | Min Error (%)    | Max Error (%)")
+                print("  -----------|---------------|------------------|------------------")
+                config_data = type_data[type_data['config_name'] == config_name]
+                for size in sorted(config_data['matrix_size'].unique()):
+                    size_data = config_data[config_data['matrix_size'] == size]
+                    if not size_data.empty:
+                        condition_num = size_data['mean_condition_number'].iloc[0]
+                        min_error = size_data['mean_relative_l2_error'].min() * 100
+                        max_error = size_data['mean_relative_l2_error'].max() * 100
+                        print(f"  {size:10d} | {condition_num:12.2e} | {min_error:16.10f} | {max_error:16.10f}")
     def plot_all(self):
         """Create all plots from saved results"""
         
