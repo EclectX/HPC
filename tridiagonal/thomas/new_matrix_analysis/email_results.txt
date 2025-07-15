@@ -1,0 +1,26 @@
+Dear Josef,
+
+I have completed the tridiagonal matrix solver Thomas algorithm implementation with approximate multipliers in Python. Attached are the graphs generated from my analysis. Could you please review them and let me know what error levels for different approximation configurations would be useful for our research?
+
+I tested 6 different AFMP configurations across various matrix sizes and calculated the relative L2 error against double-precision ground truth. Two matrix types were tested: FEM 1D Poisson discretization and Dorr matrices. The analysis shows theoretical error bounds prominently displayed alongside measured errors.
+
+**Key Results:**
+
+1. **FEM Performance**: All AFMP configurations achieve 100% success rate on FEM matrices with predictable error scaling following theoretical bounds (E_RelL2 ≤ C × ε_float32 × κ(A))
+
+2. **Dorr Matrix Challenges**: Success rate drops to 45.4% for ill-conditioned Dorr matrices, with failures occurring at condition numbers > 1e15
+
+3. **Configuration Hierarchy**: Clear performance order: Exact > High Approx > Low Approx > Medium > Very Low > Worst
+
+I have pushed the code to GitHub with comprehensive documentation. The usage guide at new_matrix_analysis/README.md should be particularly helpful. There are three Python files to execute:
+
+```bash
+python matrix_generators.py
+python parametric_afmp_analysis.py  
+python create_custom_plots.py
+```
+
+Please let me know your thoughts on the error levels. These tests are initial tests and we have many more configurations and designs of the multipliers. I just wanted to know your opinion on these results.
+
+Best regards,
+Pouria

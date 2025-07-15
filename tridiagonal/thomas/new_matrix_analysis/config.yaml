@@ -1,0 +1,124 @@
+# Parametric Matrix Analysis Configuration
+# Configuration for FEM 1D Poisson and Dorr matrix AFPM analysis
+
+# Matrix Generation Settings
+matrix_generation:
+  # Matrix size configuration
+  sizes: [4, 8, 16, 32, 64, 128,256,512,1024,2048,4096]  # Custom sizes
+  
+  # FEM 1D Poisson settings
+  fem_poisson:
+    matrices_per_size: 10      # Multiple instances per size
+    
+  # Dorr matrix settings  
+  dorr:
+    alpha_values: [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]  # Parameter sweep
+    matrices_per_config: 10     # Multiple instances per (size, alpha) combination
+    plot_sizes: [ 4,8,16,32,64, 128,256,512,1024,2048,4096]  # All 6 sizes for Dorr plots
+  
+  # Output directory
+  output_dir: "test_matrices_parametric"
+  
+  # Random seed for reproducibility
+  random_seed: 42
+
+# AFPM Analysis Settings
+afmp_analysis:
+  # AFPM Configurations (keeping the current 6 configurations)
+  configurations:
+    "Exact":
+      chromosome: [-1, -1, -1, -1, -1, -1, -1, -1, -1]
+      description: "Hardware exact multiplication"
+      color: "#1f77b4"
+      
+    "Very Low Approx":
+      chromosome: [20, 15, 10, 5, 0, 0, 0, 0, 0]
+      description: "Approximate only least significant multiplications"
+      color: "#ff7f0e"
+      
+    "Low Approximation":
+      chromosome: [40, 30, 20, 10, 5, 0, 0, 0, 0]
+      description: "Progressive approximation, preserve high bits"
+      color: "#2ca02c"
+      
+    "Medium Approximation":
+      chromosome: [60, 50, 40, 30, 20, 10, 5, 0, 0]
+      description: "Balanced approximation across significance levels"
+      color: "#d62728"
+      
+    "High Approximation":
+      chromosome: [80, 70, 60, 50, 40, 30, 20, 10, 0]
+      description: "Aggressive approximation, exact only most critical"
+      color: "#9467bd"
+      
+    "Worst (chromo8=0)":
+      chromosome: [99, 99, 99, 99, 99, 99, 99, 99, 0]
+      description: "Maximum approximation, exact only AH×BH"
+      color: "#8c564b"
+  
+  # Analysis settings
+  results_dir: "results_parametric"
+  
+  # Error calculation settings
+  error_metrics:
+    - "relative_l2"          # Primary metric: ||x_afpm - x_exact||₂ / ||x_exact||₂
+    - "absolute_l2"          # Secondary: ||x_afpm - x_exact||₂
+  
+  # Theoretical bounds
+  theoretical_bounds:
+    float32_epsilon: 1.19e-7  # 2^(-23)
+    thomas_constant: 3.0      # Algorithm constant for Thomas method
+
+# Plotting Settings
+plotting:
+  # Figure settings
+  figure_size: [16, 12]      # Width, height in inches
+  dpi: 300                   # Resolution for saved figures
+  
+  # Plot types to generate
+  plot_types:
+    - "logarithmic"          # Log-log scale plots
+    - "configuration_table"  # Configuration comparison table
+    - "parameter_sweep"      # Special plots for parameter analysis
+  
+  # Plot styling
+  error_bars: true           # Show error bars (std deviation)
+  grid: true                 # Show grid lines
+  legend_fontsize: 8         # Legend font size
+  
+  # Parametric plot settings
+  parameter_plots:
+    alpha_sweep: true        # Create plots showing alpha parameter effects
+    size_comparison: true    # Compare matrix types across sizes
+    condition_analysis: true # Analyze condition number effects
+
+# Advanced Settings
+advanced:
+  # Memory management
+  max_memory_usage: "8GB"    # Maximum RAM usage estimation
+  
+  # Parallel processing
+  enable_parallel: true      # Enable parallel matrix generation
+  num_processes: 16           # Number of parallel processes
+  
+  # Numerical precision
+  pivot_threshold: 1e-10     # Threshold for pivot detection
+  condition_number_method: "svd"  # Options: "svd", "norm_estimate"
+  
+  # Error handling
+  skip_failed_matrices: true  # Skip matrices that fail to solve
+  verbose_output: true       # Detailed progress reporting
+
+# Validation Settings
+validation:
+  # Matrix validation
+  check_condition_number: true     # Compute and validate condition numbers
+  max_condition_number: 1e15       # Skip matrices with higher condition numbers
+  
+  # Result validation
+  check_residual: true            # Verify Ax = b residual
+  max_residual: 1e-10             # Maximum acceptable residual
+  
+  # Consistency checks
+  compare_with_exact: true        # Compare AFPM with exact solver
+  relative_tolerance: 1e-12       # Tolerance for exact comparison

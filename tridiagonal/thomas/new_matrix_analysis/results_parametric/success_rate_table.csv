@@ -1,0 +1,7 @@
+Configuration,FEM Success (%),Dorr Success (%),Valid/Total
+Exact,100.0%,45.4%,428/798
+High Approximation,100.0%,45.4%,428/798
+Low Approximation,100.0%,45.4%,428/798
+Medium Approximation,100.0%,45.4%,428/798
+Very Low Approx,100.0%,45.4%,428/798
+Worst (chromo8=0),100.0%,45.4%,428/798
